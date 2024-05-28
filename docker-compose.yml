@@ -9,5 +9,6 @@ services:
             - "8337:8337"
         volumes:
             - .:/app:rw
+            - ${HOME}/.composer:/home/app/.composer
         environment:
             - APP_ENV=dev
