@@ -24,7 +24,7 @@ class Coupon
     private string $type;
 
     #[ORM\Column]
-    private int $persent;
+    private int $value;
 
     public function __construct()
     {
@@ -57,14 +57,14 @@ class Coupon
         return $this;
     }
 
-    public function getPersent(): int
+    public function getValue(): int
     {
-        return $this->persent;
+        return $this->value;
     }
 
-    public function setPersent(int $persent): static
+    public function setValue(int $value): static
     {
-        $this->persent = $persent;
+        $this->value = $value;
         return $this;
     }
 }
