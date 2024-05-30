@@ -19,7 +19,7 @@ Content-Type: application/json
   "couponCode": "F50"
 }
 
-### Execute Purchase
+### Execute Purchase paypal
 POST http://127.0.0.1:8337/purchase
 Accept: application/json
 Content-Type: application/json
@@ -29,4 +29,15 @@ Content-Type: application/json
   "taxNumber": "IT12345678900",
   "couponCode": "F50",
   "paymentProcessor": "paypal"
+}
+
+### Execute Purchase paypal
+POST http://127.0.0.1:8337/purchase
+Accept: application/json
+Content-Type: application/json
+
+{
+  "product": 2,
+  "taxNumber": "IT12345678900",
+  "paymentProcessor": "stripe"
 }
