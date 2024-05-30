@@ -5,8 +5,18 @@ Content-Type: application/json
 
 {
   "product": 1,
+  "taxNumber": "DE123456789"
+}
+
+### Calculate Price with coupon
+POST http://127.0.0.1:8337/calculate-price
+Accept: application/json
+Content-Type: application/json
+
+{
+  "product": 1,
   "taxNumber": "DE123456789",
-  "couponCode": "D15"
+  "couponCode": "F50"
 }
 
 ### Execute Purchase

@@ -3,35 +3,39 @@
 namespace App\Controller;
 
 use App\Dto\ProductForCalculatePrice;
+use App\Service\ErrorFormatService;
 use App\Service\PriceService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductController extends AbstractController
 {
     public function __construct(
-        private readonly PriceService $priceService
+        private readonly PriceService $priceService,
+        private readonly ValidatorInterface $validator,
+        private readonly ErrorFormatService $errorFormatService,
     ) {
     }
 
     #[Route('/calculate-price', name: 'product_calculate_price', methods: ['POST'])]
     public function calculatePrice(Request $request): JsonResponse
     {
-        //        {
-        //            "product": 1, // обязательно и цифра
-        //            "taxNumber": "DE123456789", // обязательно
-        //            "couponCode": "D15" // необязательно
-        //        }
-
+        $inputBag = $request->getPayload();
         $productForCalculatePrice = new ProductForCalculatePrice(
-            $request->get('product'),
-            $request->get('taxNumber'),
-            $request->get('couponCode'),
+            $inputBag->get('product'),
+            $inputBag->get('taxNumber'),
+            $inputBag->get('couponCode'),
         );
 
-        // Вылидируем
+        $errors = $this->validator->validate($productForCalculatePrice);
+        if (count($errors) > 0) {
+            return new JsonResponse([
+                'errors' => $this->errorFormatService->format($errors),
+            ], 400);
+        }
 
         try {
             $price = $this->priceService->calculate($productForCalculatePrice);
@@ -40,25 +44,6 @@ class ProductController extends AbstractController
                 'errors' => [$exception->getMessage()],
             ], 400);
         }
-
-        /**
-         * Валидация полей
-         * Налоговый номер сделать обязательным
-         * Купон не обязательным
-         */
-
-        /**
-         * Сервис для рассчета цены продукта
-         */
-
-        /**
-         * Сервис для парсинга и получения налога
-         */
-
-        /**
-         * Сервис для получения и валидации купона
-         * Ошибка, если такого купона не существует
-         */
 
         return new JsonResponse([
             'price' => $price,

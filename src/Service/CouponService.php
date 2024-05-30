@@ -23,7 +23,7 @@ class CouponService
      * @throws NegativeCouponException
      * @throws NotFoundCouponException
      */
-    public function apply(Product $product, string $couponCode): int
+    public function apply(Product $product, string $couponCode): float
     {
         $parceCoupon = $this->couponParceService->parce($couponCode);
 

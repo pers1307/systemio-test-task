@@ -28,7 +28,7 @@ class PriceService
      * @throws NotFoundCouponException
      * @throws WrongCouponCodeFormatException
      */
-    public function calculate(ProductForCalculatePrice $productForCalculatePrice): int
+    public function calculate(ProductForCalculatePrice $productForCalculatePrice): float
     {
         $productRepository = $this->entityManager->getRepository(Product::class);
         /** @var Product $product */
