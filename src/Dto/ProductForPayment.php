@@ -9,7 +9,7 @@ use App\Service\TaxService;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-class ProductForCalculatePrice
+class ProductForPayment
 {
     public function __construct(
         #[Assert\NotBlank]
@@ -18,16 +18,9 @@ class ProductForCalculatePrice
         #[Assert\NotBlank]
         private readonly ?string $taxNumber,
         private readonly ?string $couponCode,
+        #[Assert\NotBlank]
+        private readonly string $paymentType,
     ) {
-    }
-
-    public static function createFromProductForPayment(ProductForPayment $productForPayment): self
-    {
-        return new self(
-            $productForPayment->getProductId(),
-            $productForPayment->getTaxNumber(),
-            $productForPayment->getCouponCode()
-        );
     }
 
     #[Assert\Callback]
@@ -59,5 +52,10 @@ class ProductForCalculatePrice
     public function getCouponCode(): ?string
     {
         return $this->couponCode;
+    }
+
+    public function getPaymentType(): string
+    {
+        return $this->paymentType;
     }
 }

@@ -22,3 +22,14 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    paypal_payment_processor:
+        class: App\Service\Payment\Processor\PaypalPaymentProcessor
+
+    stripe_payment_processor:
+        class: App\Service\Payment\Processor\StripePaymentProcessor
+
+    App\Service\Payment\PaymentService:
+        calls:
+            - addProcessor: [ '@paypal_payment_processor' ]
+            - addProcessor: [ '@stripe_payment_processor' ]
